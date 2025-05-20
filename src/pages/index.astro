@@ -1,5 +1,5 @@
 ---
-
+import InfiniteGrid from '../components/InfiniteGrid.astro';
 ---
 
 <html lang="en">
@@ -8,9 +8,16 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Grid.</title>
+		<style is:global>
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<InfiniteGrid />
 	</body>
 </html>

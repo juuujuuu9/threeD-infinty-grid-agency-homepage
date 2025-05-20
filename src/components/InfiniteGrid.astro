@@ -1,0 +1,70 @@
+---
+import { onMount } from 'astro/client';
+---
+
+<div id="canvas-container" style="width: 100vw; height: 100vh;"></div>
+<div id="image-overlay" class="image-overlay">
+  <div class="expanded-image-container">
+    <img id="expanded-image" src="" alt="Expanded image" />
+    <button class="close-button">×</button>
+  </div>
+</div>
+
+<style>
+  .image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .image-overlay.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  .expanded-image-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 80vh;
+  }
+
+  .expanded-image-container img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  .close-button {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  .close-button:hover {
+    opacity: 0.8;
+  }
+</style>
+
+<script>
+  import { initScene } from '../scripts/three-scene.js';
+  
+  // Initialize the scene when the DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    initScene();
+  });
+</script>
