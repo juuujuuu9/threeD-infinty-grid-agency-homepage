@@ -277,6 +277,54 @@ export async function initScene() {
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('click', onImageClick);
 
+  // Add touch event handlers
+  window.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    mouseDown = true;
+    dragOffset.x = 0;
+    dragOffset.y = 0;
+    lastMouse.x = event.touches[0].clientX;
+    lastMouse.y = event.touches[0].clientY;
+    onMouseDown();
+  }, { passive: false });
+
+  window.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    mouseDown = false;
+    isDragging = false;
+    onMouseUp();
+  }, { passive: false });
+
+  window.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    if (!mouseDown) return;
+    
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - lastMouse.x;
+    const deltaY = touch.clientY - lastMouse.y;
+    
+    // If we've moved more than a few pixels, consider it a drag
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      isDragging = true;
+    }
+    
+    // Update drag offset
+    dragOffset.x += deltaX;
+    dragOffset.y += deltaY;
+    
+    // Apply movement directly to camera position (inverted direction)
+    camera.position.x -= deltaX * 0.02;
+    camera.position.y += deltaY * 0.02;
+    
+    // Update velocity based on movement (inverted direction)
+    velocity.x = -deltaX * 0.02;
+    velocity.y = deltaY * 0.02;
+    
+    // Update last touch position
+    lastMouse.x = touch.clientX;
+    lastMouse.y = touch.clientY;
+  }, { passive: false });
+
   animate();
 }
 
